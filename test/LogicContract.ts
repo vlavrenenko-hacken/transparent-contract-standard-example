@@ -23,13 +23,15 @@ describe("TransparentProxy Test", function () {
   it("Test transparent proxy", async function () {
     const {TokenV1, TokenV2} = await loadFixture(deploySetupFixture);
     const proxyv1 = await hre.upgrades.deployProxy(TokenV1, {initializer: "initialize", kind:"transparent"});
-    expect(await proxyv1.name()).to.eq("TokenV1");
+    expect(await proxyv1.name()).to.eq("Token");
     
-    // upgrade to the second version{call: "pauseInit", kind: "transparent" }
-    const proxyv2 = await hre.upgrades.upgradeProxy(proxyv1, TokenV2, {call:"pauseInit", kind:"transparent"});
-    
+    // upgrade to the second version
+    const proxyv2 = await hre.upgrades.upgradeProxy(proxyv1, TokenV2, {call:"pauseInit"});
+  
     // pause the contract
     await proxyv2.pause();
     await expect(proxyv2.mint(signers[1].address, ethers.utils.parseEther("1"))).to.be.revertedWith("Pausable: paused");
+    await proxyv2.unpause();
+    await expect(proxyv2.connect(signers[1]).mint(signers[2].address, ethers.utils.parseEther("1"))).to.be.revertedWith("Ownable: caller is not the owner");
   })
 });
