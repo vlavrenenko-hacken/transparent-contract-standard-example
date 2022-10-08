@@ -5,6 +5,7 @@
     "hardhat": "^2.11.2"
   },
   "dependencies": {
+    "@openzeppelin/contracts-upgradeable": "^4.8.0-rc.1",
     "@openzeppelin/hardhat-upgrades": "^1.21.0",
     "npm-check-updates": "^16.3.8"
   }
