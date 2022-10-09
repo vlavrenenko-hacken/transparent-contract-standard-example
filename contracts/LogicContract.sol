@@ -23,7 +23,7 @@ contract TokenV1 is
     * @dev Executed only once as the constructor()    
     */
     function initialize() public initializer {
-       __ERC20_init("TokenV1", "TKN1");
+       __ERC20_init("Token", "TKN");
        __Ownable_init();
        _mint(msg.sender, 10000000 * 10 ** decimals());
     }
@@ -40,7 +40,7 @@ contract TokenV2 is TokenV1, PausableUpgradeable {
         _mint(to, amount);
     }
 
-    function pauseInit() external reinitializer(VERSION) {
+    function pauseInit() external reinitializer(VERSION){
         __Pausable_init();
     }
 
